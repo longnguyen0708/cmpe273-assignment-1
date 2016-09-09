@@ -193,11 +193,44 @@ try {
 	for (var i = 0; i < reqObj.requests.length; i++) {
 		var clientName = reqObj.requests[i].client;
 		var time = new Date(reqObj.requests[i].time).getTime() / 1000;
-		document.write("<p>Client: " + clientName + " time received: " +  reqObj.requests[i].time + "-->" + (now - time > 60 ? "timeout" : "valid") + "</p>");
+		//document.write("<p>Client: " + clientName + " time received: " +  reqObj.requests[i].time + "-->" + (now - time > 60 ? "timeout" : "valid") + "</p>");
 	}
 } catch (e) {
 	// TODO: handle exception
 	alert("ERROR: " + e.description);
 }
+
+//// HTML5
+//topic local storage
+var Item = function(name, price) {
+	this.name = name;
+	this.price = price;
+}
 				
-				
+var cart = [new Item("t-shirt", 9), new Item("shoe", 19), new Item("hat", 5)];
+
+var storeTemporaryCart = function() {
+	if (localStorage) {
+		localStorage.setItem("cart",  JSON.stringify(cart));
+	} else {
+		alert("The browser does not support local storate!!!");
+	}
+}
+
+var getTemporaryCart = function() {
+	if (localStorage) {
+		var strLocalCart = localStorage.getItem("cart");
+		if (strLocalCart) {
+			var localCart = JSON.parse(strLocalCart);
+			document.write("<p>Local cart:</p>");
+			for (var i = 0; i < localCart.length; i++) {
+				document.write("<p>Item: " + localCart[i].name + " price: " +  localCart[i].price + "</p>");
+			}
+		}
+	} else {
+		alert("The browser does not support local storate!!!");
+	}
+}
+
+//storeTemporaryCart();
+//getTemporaryCart();
