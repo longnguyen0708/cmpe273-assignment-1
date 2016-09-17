@@ -1,48 +1,46 @@
 <!DOCTYPE html>
 <html>
+<head>
+</head>
 <body>
 
-<p id="demo">Click the button to get your position.</p>
+<div id="mapshow"></div>
 
-<button onclick="getLocation()">Try It</button>
+<script type="text/javascript">
 
-<div id="mapholder"></div>
+window.onload = function() {
+	showPath();	
+}
 
-<script>
-var x = document.getElementById("demo");
-
-function getLocation() {
+function showPath() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
+        navigator.geolocation.getCurrentPosition(drawPath, alertError);
     } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
+        alert("Geolocation is not supported by this browser.");
     }
 }
 
-function showPosition(position) {
+function drawPath(position) {
     var latlon = position.coords.latitude + "," + position.coords.longitude;
-
-    var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
-    +latlon+"&zoom=14&size=400x300&sensor=false";
-    document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>";
+	
+    var imgUrl = "http://maps.googleapis.com/maps/api/staticmap?markers=color:red%7Clabel:C%7C" + latlon + "&markers=color:green%7Clabel:C%7C37.337224,-121.881178&path=color:0xff0000ff|weight:5|" + latlon + "|37.337224,-121.881178&zoom=12&size=400x300&sensor=false";
+   document.getElementById("mapshow").innerHTML = "<img src='"+imgUrl+"'>"; 
 }
 
-function showError(error) {
+function alertError(error) {
     switch(error.code) {
         case error.PERMISSION_DENIED:
-            x.innerHTML = "User denied the request for Geolocation."
+            alert("Geolocation is denied")
             break;
         case error.POSITION_UNAVAILABLE:
-            x.innerHTML = "Location information is unavailable."
+            alert("Location is unavailable.")
             break;
-        case error.TIMEOUT:
-            x.innerHTML = "The request to get user location timed out."
-            break;
-        case error.UNKNOWN_ERROR:
-            x.innerHTML = "An unknown error occurred."
+        default:
+            alert("An unknown error occurred.")
             break;
     }
 }
+
 </script>
 
 </body>
